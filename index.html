@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <script src="./js/qar_lib.js"></script>
+    <style>
+      .h1{
+        text-align: center;
+      }
+    </style>
+    <title>QAR标准查询</title>
+  </head>
+  <body>
+ <div class="container">
+     <h1 class="h1 bg-dark p-2 text-white rounded">QAR标准查询</h1>
+     <div class="form-row mb-3">
+         <div class="col-9">
+            <input type="text" id="qarName" class="form-control" placeholder="输入QAR事件名称" aria-label="Username" aria-describedby="basic-addon1">
+         </div>
+         <div class="col-3">
+            <button class="form-control btn btn-primary" id="queryQAR">查询</button>
+         </div>
+     </div>
+     <div id="result"></div>
+     <div class="alert alert-danger" role="alert">
+        <h4 class="alert-heading">查询方法</h4>
+        <div>使用简单的几个<strong>关键字</strong>查，就可以了。<br />如：</div>
+        <ol>
+          <li>下 大</li>
+          <li>进近 大</li>
+          <li>轮 速度大</li>
+        </ol>
+        <div>海口飞行部安技室数据化小组 <br />2019年02月13日</div>
+      </div>
+      <a class="btn btn-danger" href="../../飞行技术/知识点学习/Load_Report.md">过载报告代码解释</a>
+</div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+  <script>
+  function showResult(arr){
+    $("#result").html("");
+    for(var i=0;i<arr.length;i++){
+      var title=arr[i][2];
+      var str="";
+      str=str+"【监控条件】："+arr[i][6]+"<br />"+
+          "【持续时间】："+arr[i][7]+"<br />"+
+          "【客户化代码】："+arr[i][0]+"<br />"+
+          "一级事件："+arr[i][3]+"<br />"+
+          "二级事件："+arr[i][4]+"<br />"+
+          "三级事件："+arr[i][5]+"<br />";
+      var ui='<div class="card mb-2 ">'+
+        '<h5 class="card-header">'+title+'</h5>'+
+        '<div class="card-body">'+
+            
+            '<p class="card-text">'+str+'</p>'+
+          '</div>'+
+        '</div>';
+      $("#result").append(ui);
+    }
+  }
+  $(function () {
+    $("#queryQAR").click(function(){
+      var qarName=$("#qarName").val();
+      qarName=qarName.replace(new RegExp(" |　| ","g"),".*?");
+      $("#qarName").val("");
+      var reg=new RegExp(qarName);
+      var qars=[];
+      for(var i=0;i<qarLib.length;i++){
+        var qar=qarLib[i];
+        var eventName=qar[2];
+        if(reg.test(eventName)){
+          qars.push(qar);
+        }
+      }
+
+        showResult(qars);
+    });
+  })
+  var x="xu　n a me";
+  console.log(x.replace(new RegExp(" |　| ","g"),".*?"))
+  </script>
+  </body>
+</html>
