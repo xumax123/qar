@@ -36,9 +36,16 @@
           <li>进近 大</li>
           <li>轮 速度大</li>
         </ol>
-        <div>2020年08月11日</div>
-        <div>2022年05月26日更新</div>
+
       </div>
+      <div class="alert alert-warning">
+        <h4>更新日志</h4>
+          <ol>
+            <li>2020年08月11日</li>
+            <li>2022年05月26日</li>
+            <li>2024年01月28日</li>
+          </ol>
+        </div>
       <div class="btn btn-danger" >徐国银设计</div>
 </div>
     <!-- Optional JavaScript -->
@@ -47,9 +54,33 @@
     <script src="./js/bootstrap.bundle.min.js"></script>
     <script src="./js/jquery.slim.min.js"></script>
     <script src="./js/qar_lib.js"></script>
+    <script src="./js/qar_202401_lib.js"></script>
 <script>
+  //下面是2024年，根据新的QAR标准，增加的部分。
+  function show2024QARResult(arr){
+    for(var i=0;i<arr.length;i++){
+      var title=arr[i][3]+"</br >"+arr[i][2];
+      var content=`
+      【监控条件】：${arr[i][7]}<br />
+      【机型】：${arr[i][1]}<br />
+      【事件类别】：${arr[i][8] ?  arr[i][8] : '无'}<br />
+      一级事件：${arr[i][4]}<br />
+      二级事件：${arr[i][5]}<br />
+      三级事件：${arr[i][6]}<br />
+      `;
+      var ui='<div class="card border-info mb-2 ">'+
+        '<h5 class="card-header bg-info text-white">'+title+'</h5>'+
+        '<div class="card-body">'+
+            
+            '<p class="card-text">'+content+'</p>'+
+          '</div>'+
+        '</div>';
+        $("#result").append(ui);
+    }
+  }
+  //这里增加了显示最新的（202401）标准。
   function showResult(arr){
-    $("#result").html("");
+    
     for(var i=0;i<arr.length;i++){
       var title=arr[i][2];
       var str="";
@@ -67,8 +98,10 @@
           '</div>'+
         '</div>';
       $("#result").append(ui);
+      
     }
   }
+
   var $=jQuery;
   $(function () {
     $("#queryQAR").click(function(){
@@ -77,6 +110,17 @@
       $("#qarName").val("");
       var reg=new RegExp(qarName);
       var qars=[];
+      $("#result").html("");
+      for(var i=0;i<qar202401lib.length;i++){
+        var qar=qar202401lib[i];
+        var eventName=qar[2];
+        if(reg.test(eventName)){
+          qars.push(qar);
+        }
+      }
+      show2024QARResult(qars)
+
+      qars=[];
       for(var i=0;i<qarLib.length;i++){
         var qar=qarLib[i];
         var eventName=qar[2];
@@ -84,8 +128,9 @@
           qars.push(qar);
         }
       }
+      showResult(qars);
 
-        showResult(qars);
+        
     });
   })
   </script>
